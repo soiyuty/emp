@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/employeemanager?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: yuyuyu2004
+
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      database: 0
+server:
+  port: 8080
