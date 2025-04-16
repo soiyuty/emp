@@ -1,6 +1,7 @@
 package com.ry.springboot_emp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.ry.springboot_emp.controller.resouls.Code;
 import com.ry.springboot_emp.exception.BusinessException;
@@ -12,6 +13,7 @@ import com.ry.springboot_emp.service.DepartmentService;
 import com.ry.springboot_emp.service.EmployeeService;
 import com.ry.springboot_emp.util.DeleteOSSImageUtil;
 import com.ry.springboot_emp.util.UplodUtil;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -170,9 +172,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 throw new BusinessException(Code.INVALID_ARGUMENT,"部门不存在,请刷新重试");
             }
             try {
-                QueryWrapper<Employee> wrapper=new QueryWrapper<Employee>();
-                System.out.println(wrapper);
-                int rows = employeeMapper.updateEmpById(employee);
+                UpdateWrapper<Employee> updateWrapper=new UpdateWrapper<Employee>();
+                updateWrapper.eq("empno",employee.getEmpno())
+                        .set("ename",employee.getEname())
+                        .set("job",employee.getJob())
+                        .set("hiredate",employee.getHiredate())
+                        .set("sal",employee.getSal())
+                        .set("comm",employee.getComm())
+                        .set("deptno",employee.getDepartment().getDeptno());
+                int rows = employeeMapper.update(updateWrapper);
                 employee.setEname(employee.getEname().trim());
                 return rows;
             }catch (Exception e){

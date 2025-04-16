@@ -107,20 +107,20 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
             @Result(property = "department.dname",column = "dname"),
             @Result(property = "department.loc",column = "loc")})
     Employee selectEmpById(@Param("id")int id);
-    //修改员工信息
-    @Update("<script>" +
-            "update employee " +
-            "<set>"+
-            "<if test='ename != null and ename!=\"\"'> ename = #{ename},</if>"+
-            "<if test='job != null and job!=\"\"'> job = #{job},</if>"+
-            "<if test='hiredate != null and hiredate != \"\"'> hiredate = #{hiredate},</if>"+
-            "<if test='sal != null and sal != \"\"'>sal=#{sal},</if>"+
-            "<if test='comm != null and comm != \"\"'>comm=#{comm},</if>"+
-            "<if test='department.deptno != null and department.deptno != \"\"'>deptno=#{department.deptno},</if>"+
-            "</set>" +
-            "where empno=#{empno} " +
-            "</script>")
-    int updateEmpById(Employee employee);
+//    //修改员工信息
+//    @Update("<script>" +
+//            "update employee " +
+//            "<set>"+
+//            "<if test='ename != null and ename!=\"\"'> ename = #{ename},</if>"+
+//            "<if test='job != null and job!=\"\"'> job = #{job},</if>"+
+//            "<if test='hiredate != null and hiredate != \"\"'> hiredate = #{hiredate},</if>"+
+//            "<if test='sal != null and sal != \"\"'>sal=#{sal},</if>"+
+//            "<if test='comm != null and comm != \"\"'>comm=#{comm},</if>"+
+//            "<if test='department.deptno != null and department.deptno != \"\"'>deptno=#{department.deptno},</if>"+
+//            "</set>" +
+//            "where empno=#{empno} " +
+//            "</script>")
+//    int updateEmpById(Employee employee);
     //删除员工信息
     @Delete("<script>" +
             "delete from employee where empno in " +

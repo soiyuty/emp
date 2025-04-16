@@ -23,7 +23,7 @@ public class Employee {
     private Department department;
     @TableField("deptno")
     private int deptno;
-    @TableField("avatarURL")
+    @TableField(value = "avatarURL")
     private String avatarURL;
 
 
