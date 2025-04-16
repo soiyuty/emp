@@ -11,4 +11,4 @@ spring:
       host: localhost
       database: 0
 server:
-  port: 80
+  port: 8080
