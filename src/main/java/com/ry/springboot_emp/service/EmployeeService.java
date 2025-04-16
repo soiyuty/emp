@@ -43,5 +43,4 @@ public interface EmployeeService {
     int UpdateEmpImageUrl(String avatarURL,int id);
     //获取用户图片路径集合
     List<String> getEmpImageUrls(List<Integer> ids);
-    public void getaaa();
 }
