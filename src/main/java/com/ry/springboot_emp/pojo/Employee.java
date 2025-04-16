@@ -16,7 +16,6 @@ public class Employee {
     private String job;
     private String hiredate;
     private Double sal;
-    @TableField("comm")
     private Double comm;
 
     @TableField(exist = false)
