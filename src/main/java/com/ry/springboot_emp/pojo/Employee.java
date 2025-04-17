@@ -18,7 +18,6 @@ public class Employee {
     private Double sal;
     @TableField("comm")
     private Double comm;
-
     @TableField(exist = false)
     private Department department;
     @TableField("deptno")

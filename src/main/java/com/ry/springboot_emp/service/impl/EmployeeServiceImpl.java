@@ -3,6 +3,7 @@ package com.ry.springboot_emp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ry.springboot_emp.controller.resouls.Code;
 import com.ry.springboot_emp.exception.BusinessException;
 import com.ry.springboot_emp.exception.SystemException;
@@ -31,7 +32,7 @@ import java.util.List;
  * @description: 员工业务类
  */
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> implements EmployeeService{
     @Autowired
     private EmployeeMapper employeeMapper;
     @Autowired

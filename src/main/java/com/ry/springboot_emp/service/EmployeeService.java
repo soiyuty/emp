@@ -1,5 +1,6 @@
 package com.ry.springboot_emp.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ry.springboot_emp.pojo.Employee;
 import com.ry.springboot_emp.pojo.vo.CriteriasEmp;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.util.List;
  * @description: 员工业务逻辑接口
  */
 
-public interface EmployeeService {
+public interface EmployeeService extends IService<Employee> {
     //查询全部员工
     @Transactional(readOnly = true)
     List<Employee> getAllEmp();

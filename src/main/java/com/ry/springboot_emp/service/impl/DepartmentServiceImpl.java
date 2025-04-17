@@ -1,8 +1,11 @@
 package com.ry.springboot_emp.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ry.springboot_emp.mapper.DepartmentMapper;
 import com.ry.springboot_emp.pojo.Department;
 
+import com.ry.springboot_emp.pojo.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,7 @@ import java.util.List;
  * @description: 部门业务类
  */
 @Service
-public class DepartmentServiceImpl implements com.ry.springboot_emp.service.DepartmentService {
+public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper,Department> implements com.ry.springboot_emp.service.DepartmentService {
     @Autowired
     private DepartmentMapper departmentMapper;
 
@@ -26,8 +29,7 @@ public class DepartmentServiceImpl implements com.ry.springboot_emp.service.Depa
      */
     @Override
     public List<Department> getDepAll() {
-
-        return departmentMapper.selectDepAll();
+        return this.list();
     }
 
     /**
@@ -36,7 +38,9 @@ public class DepartmentServiceImpl implements com.ry.springboot_emp.service.Depa
      * @return 数量
      */
     @Override
-    public int getDepCountByDepId(int id) {
-        return departmentMapper.selectDepCountByDepId(id);
+    public long getDepCountByDepId(int id) {
+        QueryWrapper<Department> wrapper=new QueryWrapper<Department>()
+                .eq("deptno",id);
+        return this.count(wrapper);
     }
 }
