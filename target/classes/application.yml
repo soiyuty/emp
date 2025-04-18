@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/employeemanager?useUnicode=true&characterEncoding=utf8
     username: root
-    password: yuyuyu2004
+    password: root
 
   data:
     redis:

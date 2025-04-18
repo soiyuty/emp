@@ -40,7 +40,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper,Departme
     @Override
     public long getDepCountByDepId(int id) {
         QueryWrapper<Department> wrapper=new QueryWrapper<Department>()
-                .eq("deptno",id);
+                .eq("deptno",id);//自定义sql
         return this.count(wrapper);
     }
 }

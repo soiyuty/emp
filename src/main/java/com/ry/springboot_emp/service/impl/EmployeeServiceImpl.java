@@ -19,12 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author 21142
@@ -45,7 +47,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      */
     @Override
     public List<Employee> getAllEmp() {
-        return employeeMapper.selectEmpAll();
+        return this.list();
     }
 
     /**
@@ -53,8 +55,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      * @return 数量
      */
     @Override
-    public int getEmpCount() {
-        return employeeMapper.selectEmpCount();
+    public long getEmpCount() {
+        return this.count();
     }
 
     /**
@@ -63,8 +65,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      * @param perPage 每页几条
      * @return 员工集合
      */
-    @Override
-    public List<Employee> getEmpPage(int page, int perPage) {
+    @Override //待修改
+    public List<Employee> getEmpPage(int page, int perPage) {  //嵌套结果
         page=(page-1)*perPage;
         return employeeMapper.selectEmpPage(page,perPage);
     }
@@ -111,8 +113,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
                    }
                     return rows;
                 }catch (Exception e){
-                    System.out.println(e.getMessage());
-                    throw new SystemException(Code.ERR,e.getMessage());
+                    throw new SystemException(Code.ERR,"系统繁忙");
                 }
 
             }else {
@@ -131,7 +132,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      * @return 集合
      */
     @Override
-    public List<Employee> getEmpCriterias(CriteriasEmp criteriasEmp,int page,int perPage) {
+    public List<Employee> getEmpCriterias(CriteriasEmp criteriasEmp,int page,int perPage) {  //嵌套结果
         if (page!=0&&perPage!=0){
             page=(page-1)*perPage;
             return employeeMapper.selectEmpCriterias(criteriasEmp,page,perPage);
@@ -156,7 +157,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      * @return 员工对象
      */
     @Override
-    public Employee getEmpById(int id) {
+    public Employee getEmpById(int id) { //嵌套结果
         return employeeMapper.selectEmpById(id);
     }
 
@@ -175,13 +176,14 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
             try {
                 UpdateWrapper<Employee> updateWrapper=new UpdateWrapper<Employee>();
                 updateWrapper.eq("empno",employee.getEmpno())
-                        .set("ename",employee.getEname())
+                        .set(employee.getEname()!=null&&!employee.getEname().equals(""),"ename",employee.getEname())
                         .set("job",employee.getJob())
                         .set("hiredate",employee.getHiredate())
                         .set("sal",employee.getSal())
                         .set("comm",employee.getComm())
-                        .set("deptno",employee.getDepartment().getDeptno());
+                        .set(employee.getDepartment().getDeptno()!=0,"deptno",employee.getDepartment().getDeptno());
                 int rows = employeeMapper.update(updateWrapper);
+
                 employee.setEname(employee.getEname().trim());
                 return rows;
             }catch (Exception e){
@@ -198,36 +200,43 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      * @return 受影响的行数
      */
     @Override
-    public int deleteEmp(List<Integer> ids) {
+    public int deleteEmp(List<Integer> ids) throws IOException {
         if (!ids.isEmpty()){
-            try {
-                if (ids.size()>1){
-                    List<String> UrlNames =this.getEmpImageUrls(ids);
+            //查询出有数据的id
+            QueryWrapper<Employee> wrapper=new QueryWrapper<>();
+            wrapper.select("empno")
+                    .in("empno",ids);
+            List<Integer> collect = employeeMapper.selectList(wrapper)
+                    .stream().map(Employee::getEmpno)
+                    .collect(Collectors.toList()); //筛选有数据的id 返回数组
+                if (collect.size()>1){ //删除多个
+                    List<String> UrlNames =this.getEmpImageUrls(collect);
                     List<String> FileName=new ArrayList<>();
                     for (String url:UrlNames){ //便利url集合获取文件名
-                        if (url!=null){
+                        if (url!=null&&!url.equals("")){
                             URI uri = URI.create(url);
                             FileName.add(Paths.get(uri.getPath()).getFileName().toString());
                         }
                     }
-                    int rows = employeeMapper.deleteEmp(ids);
+                    boolean row = this.removeByIds(collect);
                     DeleteOSSImageUtil.deleteImages(FileName);//执行批量删除文件
-                    return rows;
-                }else {
+
+                    return row ? 1:0;
+                }else { // 删除单个
                     Employee employee=employeeMapper.selectEmpById(ids.get(0));
-                    int rows = employeeMapper.deleteEmp(ids);
+                    if (employee==null){
+                        throw new BusinessException(Code.INVALID_ARGUMENT,"员工不存在");
+                    }
+                    boolean rows = removeById(ids.get(0));
                     if(employee.getAvatarURL()!=null&&employee.getAvatarURL()!=""){
                         URI uri = URI.create(employee.getAvatarURL());
                         String fileName = Paths.get(uri.getPath()).getFileName().toString();
                         DeleteOSSImageUtil.deleteImage(fileName);
-                        return rows;
+                        return rows ? 1:0;
                     }else {
-                        return rows;
+                        return rows ? 1:0;
                     }
                 }
-            }catch (Exception e){
-                throw new SystemException(Code.ERR,"系统繁忙，请稍后重试");
-            }
         }else {
             return 0;
         }
