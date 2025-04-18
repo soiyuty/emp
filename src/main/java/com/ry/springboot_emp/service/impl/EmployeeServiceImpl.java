@@ -208,7 +208,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
                     .in("empno",ids);
             List<Integer> collect = employeeMapper.selectList(wrapper)
                     .stream().map(Employee::getEmpno)
-                    .collect(Collectors.toList()); //筛选有数据的id 返回数组
+                    .collect(Collectors.toList()); //筛选有数据的id 返回整型数组
                 if (collect.size()>1){ //删除多个
                     List<String> UrlNames =this.getEmpImageUrls(collect);
                     List<String> FileName=new ArrayList<>();
