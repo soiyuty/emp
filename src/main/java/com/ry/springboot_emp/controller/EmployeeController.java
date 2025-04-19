@@ -68,7 +68,7 @@ public class EmployeeController {
     //多条件查询员工个数
     @RequestMapping("/CriCou")
     public Result getEmpCriteriasCount(@RequestBody CriteriasEmp criteriasEmp){
-        int count = employeeService.getEmpCriteriasCount(criteriasEmp);
+        long count = employeeService.getEmpCriteriasCount(criteriasEmp);
         return new Result(Code.OK,count);
     }
     //根据员工编号查询员工

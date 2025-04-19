@@ -1,6 +1,7 @@
 package com.ry.springboot_emp;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ry.springboot_emp.pojo.Employee;
+import com.ry.springboot_emp.pojo.vo.CriteriasEmp;
 import com.ry.springboot_emp.service.DepartmentService;
 import com.ry.springboot_emp.service.EmployeeService;
 import org.junit.jupiter.api.Test;
@@ -44,5 +45,12 @@ private EmployeeService employeeService;
     @Test
     public void t5(){
         employeeService.removeById(1038);
+    }
+    @Test
+    public void t6(){
+        CriteriasEmp criteriasEmp=new CriteriasEmp();
+        criteriasEmp.setDep(30);
+        criteriasEmp.setName("丝");
+        employeeService.getEmpCriteriasCount(criteriasEmp);
     }
 }
