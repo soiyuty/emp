@@ -6,6 +6,7 @@ import com.ry.springboot_emp.pojo.vo.CriteriasEmp;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public interface EmployeeService extends IService<Employee> {
     List<Employee> getAllEmp();
     //查询所有员工的个数
     @Transactional(readOnly = true)
-    int getEmpCount();
+    long getEmpCount();
     List<Employee> getEmpPage(int page, int perPage);
     //员工名称模糊查询
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public interface EmployeeService extends IService<Employee> {
     //修改员工信息
     int updateEmpById(Employee employee);
     //删除员工信息
-    int deleteEmp(List<Integer> ids);
+    int deleteEmp(List<Integer> ids) throws IOException;
     //用户图片URl的修改
     int UpdateEmpImageUrl(String avatarURL,int id);
     //获取用户图片路径集合

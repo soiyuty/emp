@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
  * @description: 员工实体类
  */
 public class Employee {
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "empno",type = IdType.AUTO)
     private int empno;
     private String ename;
     private String job;

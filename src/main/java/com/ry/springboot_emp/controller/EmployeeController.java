@@ -34,7 +34,7 @@ public class EmployeeController {
     }
     //查询所有员工个数 (弃用)
     @GetMapping("/c")
-    public int getEmpAll(){
+    public long getEmpAll(){
         return employeeService.getEmpCount();
     }
     //分页查询员工(弃用)
@@ -80,15 +80,14 @@ public class EmployeeController {
     //修改员工信息
     @PutMapping("/{id}")
     public Result updateEmpById(@RequestBody Employee employee,@PathVariable("id")Long id){
-        System.out.println(employee);
         int row = employeeService.updateEmpById(employee);
         return new Result(row > 0 ? Code.OK:Code.ERR,row,row > 0 ? "成功修改"+row+"条数据":"服务器错误=>修改失败");
     }
     //删除员工信息
     @DeleteMapping
-    public Result deleteEmp(@RequestBody List<Integer> ids){
+    public Result deleteEmp(@RequestBody List<Integer> ids) throws IOException {
         int row = employeeService.deleteEmp(ids);
-        return new Result(row > 0 ? Code.OK:Code.ERR,row,row > 0 ? "成功删除"+row+"条数据":"服务器错误=>删除失败");
+        return new Result(row > 0 ? Code.OK:Code.ERR,row,row > 0 ? "删除成功":"服务器错误=>删除失败");
     }
     //修改员工头像信息
     @PostMapping("upImg")
