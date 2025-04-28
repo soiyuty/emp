@@ -144,8 +144,14 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> im
      * @return 数量
      */
     @Override
-    public int getEmpCriteriasCount(CriteriasEmp criteriasEmp) {
-        return employeeMapper.selectEmpCriteriasCount(criteriasEmp);
+    public long getEmpCriteriasCount(CriteriasEmp criteriasEmp) {
+        QueryWrapper<Employee> wrapper=new QueryWrapper<Employee>()
+                .like(criteriasEmp.getName()!=null&&!criteriasEmp.getName().equals(""),"ename",criteriasEmp.getName())
+                .like(criteriasEmp.getJob()!=null&&!criteriasEmp.getJob().equals(""),"job",criteriasEmp.getJob())
+                .gt(criteriasEmp.getBeginData()!=null&&!criteriasEmp.getBeginData().equals(""),"hiredate",criteriasEmp.getBeginData())
+                .lt(criteriasEmp.getEndData()!=null&&!criteriasEmp.getEndData().equals(""),"hiredate",criteriasEmp.getEndData())
+                .eq(criteriasEmp.getDep()!=0,"deptno",criteriasEmp.getDep());
+        return this.count(wrapper);
     }
 
     /**

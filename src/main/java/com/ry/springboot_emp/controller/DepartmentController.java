@@ -27,6 +27,6 @@ public class DepartmentController {
     @GetMapping
     public Result getDepAll(){
         List<Department> depAll = departmentService.getDepAll();
-        return new Result(Code.OK,depAll,"");
+        return new Result(Code.OK,depAll,"niajji");
     }
 }

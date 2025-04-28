@@ -33,7 +33,7 @@ public interface EmployeeService extends IService<Employee> {
     List<Employee> getEmpCriterias(CriteriasEmp criteriasEmp,int page, int perPage);
     //多条件查询员工个数
     @Transactional(readOnly = true)
-    int getEmpCriteriasCount(CriteriasEmp criteriasEmp);
+    long getEmpCriteriasCount(CriteriasEmp criteriasEmp);
     //根据员工编号查询员工
     @Transactional(readOnly = true)
     Employee getEmpById(int id);
