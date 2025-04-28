@@ -2,7 +2,6 @@ package com.ry.springboot_emp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ry.springboot_emp.controller.resouls.Code;
 import com.ry.springboot_emp.exception.BusinessException;
@@ -14,11 +13,9 @@ import com.ry.springboot_emp.service.DepartmentService;
 import com.ry.springboot_emp.service.EmployeeService;
 import com.ry.springboot_emp.util.DeleteOSSImageUtil;
 import com.ry.springboot_emp.util.UplodUtil;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
